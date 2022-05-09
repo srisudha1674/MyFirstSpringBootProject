@@ -1,6 +1,7 @@
 package com.web.application.repository;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ import com.web.application.controller.Topic;
 import com.web.application.controller.TopicDTO;
 
 @Repository
-public interface TopicRepository extends JpaRepository<Topic, String>{
+public interface TopicRepository extends JpaRepository<Topic, String>,JpaSpecificationExecutor<Topic>{
 //	public List<Topic> 
 //	@Query(value = "delete from topic where id IN (:ids) ",nativeQuery = true)
 //			

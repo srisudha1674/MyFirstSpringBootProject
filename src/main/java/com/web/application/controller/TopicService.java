@@ -30,10 +30,12 @@ public class TopicService {
 		return topicrepos.findById(id);
 	}
 	
-	public List<Topic> getTopic(String id,String name,String description,String duration,int fee) {
-		return topicrepos.findByIdAndNameAndDescriptionAndDurationAndFee(id,name,description,duration,fee);
+//	public List<Topic> getTopic(String id,String name,String description,String duration,int fee) {
+//		return topicrepos.findByIdAndNameAndDescriptionAndDurationAndFee(id,name,description,duration,fee);
+//	}
+	public List<Topic> getTopic(List<SearchCriteria> sc) {
+		return topicrepos.findAll(TopicSpecification.findByCriteria(sc));
 	}
-	
 	
 
 	public String addTopic(List<Topic> topics) {
@@ -62,4 +64,6 @@ public class TopicService {
 	public List<TopicDTO> getAllHavingTeacher() {
 		return  topicrepos.findAllInst();
 	}
+
+
 }

@@ -1,5 +1,6 @@
 package com.web.application.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +44,31 @@ public class TopicController {
 			@RequestParam(name= "name",required = false) String name,
 			@RequestParam(name = "description",required = false) String description,
 			@RequestParam(name = "duration", required = false) String duration,
-			@RequestParam(name = "fee", required = false) int fee)
+			@RequestParam(name = "fee", required = false) Integer fee)
 	{
-			return topicservice.getTopic(id,name,description,duration,fee);
+		SearchCriteria sc = new SearchCriteria();
+		System.out.println(id);
+		if(id != null)
+		{
+			sc.setId(id);
+		}
+		if(name != null)
+		{
+			sc.setName(name);
+		}
+		if(description != null)
+		{
+			sc.setDescription(description);
+		}
+		if(duration != null)
+		{
+			sc.setDuration(duration);
+		}
+		if(fee !=null && fee>= 0)
+		{
+			sc.setFee(fee);
+		}
+			return topicservice.getTopic(Arrays.asList(sc));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/addTopic")
@@ -65,6 +88,6 @@ public class TopicController {
 	public void deleteTopic(@RequestBody List<String> ids) {
 		topicservice.deleteTopic(ids);
 	}
-
+	
 }
 	
