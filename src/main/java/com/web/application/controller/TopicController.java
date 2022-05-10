@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.extern.slf4j.Slf4j;
 // git project
 // added another comment
 @RestController
+@Slf4j
 public class TopicController {
 	
 	@Autowired
@@ -48,9 +51,16 @@ public class TopicController {
 	{
 		SearchCriteria sc = new SearchCriteria();
 		System.out.println(id);
+//		Logger logger = LoggerFactory.getLogger(TopicController.class);
 		if(id != null)
 		{
 			sc.setId(id);
+			log.error(" error print");
+			
+			log.info("info print");
+			log.trace("trace print");
+			log.debug("debug print");
+			log.warn("warn print");
 		}
 		if(name != null)
 		{
@@ -68,7 +78,13 @@ public class TopicController {
 		{
 			sc.setFee(fee);
 		}
-			return topicservice.getTopic(Arrays.asList(sc));
+			List<Topic> topics = topicservice.getTopic(Arrays.asList(sc));
+			if(topics.isEmpty())
+			{
+	//			to be implemented
+			}
+			return topics;
+			
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/addTopic")
