@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web.application.exception.RecordNotFoundException;
+import com.web.application.model.ErrorBean;
+
 import lombok.extern.slf4j.Slf4j;
 // git project
 // added another comment
 @RestController
 @Slf4j
-public class TopicController {
+public class TopicController{
 	
 	@Autowired
 	private TopicService topicservice;
@@ -81,7 +84,7 @@ public class TopicController {
 			List<Topic> topics = topicservice.getTopic(Arrays.asList(sc));
 			if(topics.isEmpty())
 			{
-	//			to be implemented
+				throw new RecordNotFoundException(new ErrorBean(905,"No record exist with given Id"));
 			}
 			return topics;
 			
