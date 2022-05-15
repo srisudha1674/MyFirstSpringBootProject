@@ -1,11 +1,17 @@
 package com.web.application.interceptor;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,11 +41,26 @@ public class ServiceInterceptor implements HandlerInterceptor {
 		}
 		
 		Enumeration<String> headers = request.getHeaderNames();
+		String email = "";
 		while(headers.hasMoreElements()){
 		  String headerName = headers.nextElement();
-		  System.out.println("Header Name - "+headerName+", Value	 - "+request.getHeader(headerName));
+		  String headerValue = request.getHeader(headerName);
+		  System.out.println("Header Name - "+headerName+", Value	 - " + headerValue);
+		  if(headerName.equals("user-email"))
+		  {
+			  email = headerValue;
+		  }
 		}
-		return true;
+		String url = String.format("http://localhost:8081/userrole?email_id=%s",email);
+		HttpMethod httpme = HttpMethod.GET;
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<List> val = restTemplate.exchange(url, httpme,HttpEntity.EMPTY, List.class);
+		if (val.getStatusCode() == HttpStatus.OK && val.getBody() != null && !val.getBody().isEmpty()) 
+		{
+			return true;
+		}
+		response.setStatus(401);
+		return false;
 	}
 
 	@Override
