@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.web.application.exception.DBConnectionException;
 import com.web.application.exception.RecordNotFoundException;
+import com.web.application.exception.UserNotFoundException;
 import com.web.application.model.ErrorBean;
 
 @RestControllerAdvice
@@ -24,6 +25,12 @@ public class ExceptionController {
 	public final ResponseEntity<ErrorBean>exception(DBConnectionException e)
 	{
 		return new ResponseEntity<>(e.getErrorBean(),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(value= UserNotFoundException.class)
+	public final ResponseEntity<ErrorBean>exception(UserNotFoundException e)
+	{
+		return new ResponseEntity<>(e.getErrorBean(),HttpStatus.FORBIDDEN);
 	}
 
 }

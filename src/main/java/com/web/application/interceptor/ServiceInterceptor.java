@@ -15,6 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.web.application.exception.UserNotFoundException;
+import com.web.application.model.ErrorBean;
+
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
@@ -39,7 +42,7 @@ public class ServiceInterceptor implements HandlerInterceptor {
 		  String attriName = attri.nextElement();
 		  System.out.println("Atribute Name - "+attriName+", Value	 - "+request.getAttribute(attriName));
 		}
-		
+		 
 		Enumeration<String> headers = request.getHeaderNames();
 		String email = "";
 		while(headers.hasMoreElements()){
@@ -60,6 +63,9 @@ public class ServiceInterceptor implements HandlerInterceptor {
 			return true;
 		}
 		response.setStatus(401);
+		if(val.getBody().isEmpty()) {
+		throw new UserNotFoundException(new ErrorBean(403,"No user exist with given email Id"));
+		}
 		return false;
 	}
 
