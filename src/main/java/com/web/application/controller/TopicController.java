@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +47,15 @@ public class TopicController{
 	
 	@RequestMapping("/topic")
 	//search criteria JPA
-	public List<Topic> getTopics(@RequestParam(name = "id",required = false) String id,
+	public Page<Topic> getTopics(@RequestParam(name = "id",required = false) String id,
 			@RequestParam(name= "name",required = false) String name,
 			@RequestParam(name = "description",required = false) String description,
 			@RequestParam(name = "duration", required = false) String duration,
-			@RequestParam(name = "fee", required = false) Integer fee)
+			@RequestParam(name = "fee", required = false) Integer fee,
+			@RequestParam(name = "page",defaultValue = "0") Integer page,
+			@RequestParam(name = "limit",defaultValue = "5") Integer limit,
+			@RequestParam(name = "sortBy",defaultValue = "name") String sortBy,
+			@RequestParam(name = "order",defaultValue = "ASC") String order )
 	{
 		SearchCriteria sc = new SearchCriteria();
 		System.out.println(id);
@@ -81,7 +86,7 @@ public class TopicController{
 		{
 			sc.setFee(fee);
 		}
-			List<Topic> topics = topicservice.getTopic(Arrays.asList(sc));
+			Page<Topic> topics = topicservice.getTopic(Arrays.asList(sc),page,limit,sortBy,order);
 			if(topics.isEmpty())
 			{
 				throw new RecordNotFoundException(new ErrorBean(905,"No record exist with given Id"));
@@ -89,6 +94,7 @@ public class TopicController{
 			return topics;
 			
 	}
+	
 	
 	@RequestMapping(method=RequestMethod.POST,value="/addTopic")
 	public String addTopic(@RequestBody List<Topic> topics)
@@ -99,7 +105,7 @@ public class TopicController{
 	@RequestMapping(method=RequestMethod.PUT,value="/topics/{id}")
 	public void updateTopic(@RequestBody Topic topic,@PathVariable String id)
 	{
-		topicservice.updateTopic(id,topic);
+		topicservice.updateTopic(id,topic);	
 		
 	}
 	

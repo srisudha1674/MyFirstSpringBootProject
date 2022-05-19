@@ -4,6 +4,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +28,8 @@ public interface TopicRepository extends JpaRepository<Topic, String>,JpaSpecifi
 
 	public List<Topic> findByIdAndNameAndDescriptionAndDurationAndFee(String id, String name, String description,
 		String duration, int fee);
+
+	public Page<Topic> findAll(Specification<Topic> findByCriteria, Pageable pageable);
  }
 
  
