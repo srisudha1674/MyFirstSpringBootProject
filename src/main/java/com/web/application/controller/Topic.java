@@ -1,5 +1,7 @@
 package com.web.application.controller;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,14 +12,27 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 
 
 @Entity
 @Table(name = "TOPIC")
+@Getter
+@Setter
+@AllArgsConstructor
+
 
 public class Topic {
 	
+	@JsonIgnore
 	@Id
 	@Column(name = "ID")
 	private String id;
@@ -29,6 +44,9 @@ public class Topic {
 	private String duration;
 	@Column(name = "FEE")
 	private int fee;
+	@LastModifiedDate
+	@Column(name = "LASTMODIFIED_TIME")
+	private Date lastModified;
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@Fetch(value=FetchMode.SELECT)
